@@ -3,15 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import DaftarHarga from './components/daftarHarga';
-import BeliBahan from './components/beliBahan';
-import StickyHeadTable from './components/tes';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <DaftarHarga/> */}
-    {/* <BeliBahan/> */}
-    <StickyHeadTable/>
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
