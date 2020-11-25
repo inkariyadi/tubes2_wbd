@@ -1,4 +1,5 @@
 import React from 'react';
+import {Redirect } from "react-router-dom";
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -61,6 +62,15 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Home() {
   const classes = useStyles();
+
+  if (!localStorage.getItem('email')){
+    return <Redirect to="/" />;
+  }
+
+  function handleSubmit() {
+    localStorage.clear();
+    return <Redirect to="/" />;
+  }
 
   return (
     
@@ -179,7 +189,9 @@ export default function Home() {
                 </CardActionArea>
             </Link>
         </Card>
-    
+        <Button variant="outlined" color="primary" onClick={handleSubmit}>
+            Log Out
+        </Button>
     </div>
     
     
