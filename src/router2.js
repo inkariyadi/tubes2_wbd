@@ -25,6 +25,8 @@ import NoteIcon from '@material-ui/icons/Note';
 import PersonIcon from '@material-ui/icons/Person';
 import DomainIcon from '@material-ui/icons/Domain';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
+import Pesanan from './components/pesanan';
+import DaftarBahan from './components/daftarBahan';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: { width: 'inherit' },
@@ -118,7 +120,7 @@ function Router2() {
           </Route>
           <Route exact path="/pesanan">
             <Container>
-                <Typography>pesanan</Typography>
+                <Pesanan />
             </Container>
           </Route>
           <Route exact path="/coklat">
@@ -133,7 +135,7 @@ function Router2() {
           </Route>
           <Route exact path="/bahan">
             <Container>
-                <Typography>Daftar bahan di pabrik</Typography>
+                <DaftarBahan />
             </Container>
           </Route>
           <Route exact path="/belibahan">
