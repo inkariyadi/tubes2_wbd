@@ -4,6 +4,7 @@ import Login from './login';
 import Home from './components/home';
 import DataCoklatResep from './dataCoklatResep';
 import DaftarHarga from './components/daftarHarga';
+import DataCoklat from './components/dataCoklat';
 import BeliBahan2 from './components/beliBahan2';
 import CollapsibleTable from './components/collapsibleTable';
 
@@ -125,7 +126,7 @@ function Router2() {
           </Route>
           <Route exact path="/coklat">
             <Container>
-                <Typography>coklat</Typography>
+                <DataCoklat/>
             </Container>
           </Route>
           <Route exact path="/resep">
