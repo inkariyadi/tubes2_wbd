@@ -30,7 +30,7 @@ function Row(props) {
   const classes = useRowStyles();
   let id = row.id_coklat;
   // console.log(id);
-  let api = "http://localhost:3006/api/resep/" ;
+  let api = "http://localhost:3007/api/resep/" ;
   // console.log(api);
   let newapi = api.concat(id);
   // let params = api.bind(id);
@@ -48,9 +48,8 @@ function Row(props) {
       <TableRow className={classes.root}>
         
         <TableCell >
-          {row.name}
+          {row.nama_coklat}
         </TableCell>
-        <TableCell>{row.stok}</TableCell>
         <TableCell align="right" >
           <IconButton
             aria-label="expand row"
@@ -63,9 +62,9 @@ function Row(props) {
         {/* <TableCell align="right">{row.fat}</TableCell>
         <TableCell align="right">{row.carbs}</TableCell>
         <TableCell align="right">{row.protein}</TableCell> */}
-        <TableCell >
+        {/* <TableCell >
           {row.nama_coklat}
-        </TableCell>
+        </TableCell> */}
         <TableCell>{row.stok}</TableCell>
       </TableRow>
       <TableRow>
@@ -110,7 +109,7 @@ function Row(props) {
 export default function CollapsibleTable() {
   const [coklat,setcoklat] = useState([]);
   useEffect(()=>{
-    Axios.get("http://localhost:3006/api/coklatresep").then((response)=>{
+    Axios.get("http://localhost:3007/api/coklatresep").then((response)=>{
       // console.log(response.data);
       setcoklat(response.data);
     //   rows = response.data;
@@ -120,13 +119,13 @@ export default function CollapsibleTable() {
 
   return (
     <div>
-      <h1>Daftar Coklat & Resep</h1>
-      <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
+      <h1>Daftar Resep Coklat</h1>
+      <TableContainer component={Paper} >
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
               <TableCell style={{borderColor:"black"}}>Nama Coklat</TableCell>
-              <TableCell style={{borderColor:"black"}}>Jumlah Stok</TableCell>
+              <TableCell style={{borderColor:"black"}}></TableCell>
               <TableCell style={{borderColor:"black"}}/>
               
               {/* <TableCell align="right">Fat&nbsp;(g)</TableCell>
@@ -135,8 +134,8 @@ export default function CollapsibleTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <Row key={row.name} row={row} />
+            {coklat.map((row) => (
+              <Row key={row.id_coklat} row={row} />
             ))}
           </TableBody>
         </Table>

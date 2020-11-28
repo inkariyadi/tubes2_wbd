@@ -74,6 +74,14 @@ function Router2() {
                 <ListItemText primary={"Pesanan"} />
               </ListItem>
             </Link>
+            <Link to="/coklat" className={classes.link}>
+              <ListItem button>
+                <ListItemIcon>
+                  <NoteIcon />
+                </ListItemIcon>
+                <ListItemText primary={"Coklat"} />
+              </ListItem>
+            </Link>
             <Link to="/resep" className={classes.link}>
               <ListItem button>
                 <ListItemIcon>
@@ -114,6 +122,11 @@ function Router2() {
           <Route exact path="/pesanan">
             <Container>
                 <Pesanan />
+            </Container>
+          </Route>
+          <Route exact path="/coklat">
+            <Container>
+                <DataCoklat/>
             </Container>
           </Route>
           <Route exact path="/resep">

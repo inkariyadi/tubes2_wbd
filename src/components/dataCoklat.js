@@ -31,7 +31,7 @@ export default function DataCoklat() {
   const classes = useStyles();
   const [coklat,setCoklat] = useState([]);
   useEffect(()=>{
-    Axios.get("http://localhost:3006/api/datacoklat").then((response)=>{
+    Axios.get("http://localhost:3007/api/datacoklat").then((response)=>{
       // console.log(response.data);
       setCoklat(response.data);
     //   rows = response.data;
