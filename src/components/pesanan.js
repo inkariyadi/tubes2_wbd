@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState, useEffect} from 'react';
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
@@ -13,6 +13,8 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import Axios from 'axios';
+import Button from '@material-ui/core/Button';
 
 const useRowStyles = makeStyles({
   root: {
@@ -100,22 +102,51 @@ const rows = [
 ];
 
 export default function Pesanan() {
+  const [pesananList,setPesananList] = useState([]);
+  useEffect(()=>{
+    Axios.get("http://localhost:3007/api/stock").then((response)=>{
+      setPesananList(response.data);
+    });
+  },[]);
   return (
-    <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
+    <div>
+      <h1>Daftar Coklat & Resep</h1>
+      <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell style={{borderColor:"black"}}/>
             <TableCell style={{borderColor:"black"}}>Nama Pemesan</TableCell>
-            <TableCell style={{borderColor:"black"}}/>
+            <TableCell style={{borderColor:"black"}}>Status</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
+          {/* {ini punya jundu} */}
+          {/* {rows.map((row) => (
             <Row key={row.name} row={row} />
-          ))}
+          ))} */}
+          {/* {ini punya inka} */}
+          {pesananList.map((row) => (
+              <TableRow key={row.id_coklat}>
+                <TableCell component="th" scope="row">
+                  {row.id_coklat}
+                </TableCell>
+                <TableCell align="right">{row.jumlah}</TableCell>
+                <TableCell align="right">{row.status}</TableCell>
+                <TableCell align="right">
+                <IconButton
+                  aria-label="expand row"
+                  size="small"
+                >
+                  {row.status=="Pending" ? <Button variant="contained" color="secondary">Approve</Button>: <Button variant="contained" color="secondary" disabled>Approved</Button>}
+                </IconButton>
+                </TableCell>
+              </TableRow>
+            ))}
         </TableBody>
       </Table>
     </TableContainer>
+  </div>
+    
   );
 }

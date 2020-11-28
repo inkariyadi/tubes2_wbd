@@ -10,11 +10,20 @@ import Paper from '@material-ui/core/Paper';
 import Axios from 'axios';
 import Button from "@material-ui/core/Button";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
+import Card from '@material-ui/core/Card';
+import { setPageStateUpdate } from '@material-ui/data-grid';
+function Alert(props) {
+  return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  table2:{
+    maxWidth: 300,
+  }
 });
 
 // function createData(name, calories, fat, carbs, protein) {
@@ -31,6 +40,13 @@ const useStyles = makeStyles({
 
 export default function DaftarHarga() {
   const classes = useStyles();
+  const [dialog,setDialog] = useState(false);
+  const [dialog2,setDialog2] = useState(false);
+  const [id_bahan,setIdBahan] = useState (1);
+  const [nama_bahan,setNamaBahan] = useState("bahan 1");//FIXME: get dari value
+  const [harga,setHarga] = useState(2000); //FIXME: get dari value
+  const [jumlah, setJumlah] = useState(0);
+  const [total,setTotal] = useState(0);
   const [bahanList,setBahanList] = useState([]);
   useEffect(()=>{
     Axios.get("http://localhost:3005/api/harga").then((response)=>{
@@ -40,6 +56,68 @@ export default function DaftarHarga() {
     //   console.log(rows);
     });
   },[]);
+  const handleCloseDialog = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setDialog(false);
+  };
+  const handleCloseDialog2 = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setDialog2(false);
+  };
+
+  const handleIncrement = () =>{
+    setJumlah(prev => prev +1);
+    setTotal(prev => prev + harga);
+  }
+  const handleDecrement = () =>{
+    if(jumlah!=0){
+      setJumlah(prev => prev -1);
+      setTotal(prev => prev - harga);
+    }
+    
+  }
+
+  const transaction = () =>{
+    Axios.get("http://localhost:3007/api/addbahan",{
+      params: {
+        id_bahan: id_bahan,
+        nama_bahan : nama_bahan,
+        jumlah : jumlah,
+      }
+    }).then((response)=>{
+      // console.log(response.data);
+      if(response.data=='berhasil'){
+        setDialog(prev => true);
+      }
+      else if(response.data=='tidak'){
+        setDialog2(prev => true);
+      }
+      else{
+        alert("Something went wrong with Transaction");
+      }
+      
+    });
+  }
+
+  const fetchData = () =>{
+    fetch('http://localhost:8080/wwfactory/ws/hello')
+    .then(response => {
+        console.log(response);
+    })
+    .catch(error => {
+        console.log(error);
+    })
+
+    // setTimeout(() => {
+    //     console.log('anjing')
+    // }, 5000);
+  }
   return (
     <div>
       <h1>Daftar Harga Supplier</h1>
@@ -63,11 +141,7 @@ export default function DaftarHarga() {
                 <TableCell align="right">{row.nama_bahan}</TableCell>
                 <TableCell align="right">{row.harga_satuan}</TableCell>
                 <TableCell align="right">
-                  <ButtonGroup size="small" aria-label="small outlined button group">
-                    <Button>-</Button>
-                    <Button disabled>0</Button>
-                    <Button >+</Button>
-                  </ButtonGroup>
+                    <Button variant="contained" color="secondary" onClick={() => {setIdBahan(prev => row.id_bahan);setNamaBahan(prev=>row.nama_bahan);setHarga(prev=>row.harga_satuan);setJumlah(prev=>0);setTotal(prev=>0);}}> SELECT</Button>
                 </TableCell>
                 
               </TableRow>
@@ -75,9 +149,74 @@ export default function DaftarHarga() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" color="secondary">
+      <h1>Beli Bahan</h1>
+      <TableContainer component={Card}>
+        <Table className={classes.table2} aria-label="simple table" size="medium">
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Pesanan</TableCell>
+              <TableCell align="right">Keterangan</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+              <TableRow key={1}>
+                <TableCell component="th" scope="row">
+                  ID Bahan
+                </TableCell>
+                <TableCell align="right">{id_bahan}</TableCell>
+              </TableRow>
+              <TableRow key={1}>
+                <TableCell component="th" scope="row">
+                  Nama Bahan
+                </TableCell>
+                <TableCell align="right">{nama_bahan}</TableCell>
+              </TableRow>
+              <TableRow key={1}>
+                <TableCell component="th" scope="row">
+                  Harga
+                </TableCell>
+                <TableCell align="right">{harga}</TableCell>
+              </TableRow>
+              <TableRow key={1}>
+                <TableCell component="th" scope="row">
+                  Jumlah
+                </TableCell>
+                <TableCell align="right">
+                <ButtonGroup size="small" aria-label="small outlined button group">
+                  <Button onClick={handleDecrement} >-</Button>
+                  <Button>{jumlah}</Button>
+                  
+                  <Button onClick={handleIncrement}>+</Button>
+                </ButtonGroup>
+                </TableCell>
+              </TableRow>
+              <TableRow key={1}>
+                <TableCell component="th" scope="row">
+                  Total
+                </TableCell>
+                <TableCell align="right">{total}</TableCell>
+              </TableRow>
+           
+          </TableBody>
+        </Table>
+      </TableContainer>
+      <Button variant="contained" color="secondary" onClick={transaction}>
         Beli
       </Button>
+      <Button variant="contained" color="secondary" onClick={fetchData}>
+        Tes Cors
+      </Button>
+      
+      <Snackbar open={dialog} autoHideDuration={1000} onClose={handleCloseDialog}>
+        <Alert severity="success">
+          Pembelian Berhasil
+        </Alert>
+      </Snackbar>
+      <Snackbar open={dialog2} autoHideDuration={1000} onClose={handleCloseDialog2}>
+        <Alert severity="error">
+          Pembelian Tidak Berhasil
+        </Alert>
+      </Snackbar>
       
     </div>
   );

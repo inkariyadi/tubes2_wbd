@@ -42,7 +42,12 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
-        <TableCell>
+        
+        <TableCell >
+          {row.name}
+        </TableCell>
+        <TableCell>{row.stok}</TableCell>
+        <TableCell align="right" >
           <IconButton
             aria-label="expand row"
             size="small"
@@ -51,10 +56,6 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell >
-          {row.name}
-        </TableCell>
-        <TableCell>{row.stok}</TableCell>
         {/* <TableCell align="right">{row.fat}</TableCell>
         <TableCell align="right">{row.carbs}</TableCell>
         <TableCell align="right">{row.protein}</TableCell> */}
@@ -131,24 +132,29 @@ const rows = [
 
 export default function CollapsibleTable() {
   return (
-    <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell style={{borderColor:"black"}}/>
-            <TableCell style={{borderColor:"black"}}>Nama Coklat</TableCell>
-            <TableCell style={{borderColor:"black"}}>Jumlah Stok</TableCell>
-            {/* <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <div>
+      <h1>Daftar Coklat & Resep</h1>
+      <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell style={{borderColor:"black"}}>Nama Coklat</TableCell>
+              <TableCell style={{borderColor:"black"}}>Jumlah Stok</TableCell>
+              <TableCell style={{borderColor:"black"}}/>
+              
+              {/* <TableCell align="right">Fat&nbsp;(g)</TableCell>
+              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
+              <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {rows.map((row) => (
+              <Row key={row.name} row={row} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
+    
   );
 }

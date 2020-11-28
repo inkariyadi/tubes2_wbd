@@ -42,7 +42,7 @@ function Router2() {
     <Router>
       <div style={{ display: 'flex' }}>
         <Drawer
-          style={{ width: '220px' }}
+          style={{ width: '220px',color:'black'}}
           variant="persistent"
           anchor="left"
           open={true}
@@ -71,14 +71,6 @@ function Router2() {
                   <ReceiptIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Pesanan"} />
-              </ListItem>
-            </Link>
-            <Link to="/coklat" className={classes.link}>
-              <ListItem button>
-                <ListItemIcon>
-                  <FastfoodIcon />
-                </ListItemIcon>
-                <ListItemText primary={"Coklat"} />
               </ListItem>
             </Link>
             <Link to="/resep" className={classes.link}>
@@ -121,11 +113,6 @@ function Router2() {
           <Route exact path="/pesanan">
             <Container>
                 <Pesanan />
-            </Container>
-          </Route>
-          <Route exact path="/coklat">
-            <Container>
-                <Typography>coklat</Typography>
             </Container>
           </Route>
           <Route exact path="/resep">
