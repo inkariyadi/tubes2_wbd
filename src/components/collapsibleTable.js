@@ -1,4 +1,6 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
+import ListItem from '@material-ui/core/ListItem';
+import Axios from 'axios';
 import { makeStyles } from "@material-ui/core/styles";
 import Box from "@material-ui/core/Box";
 import Collapse from "@material-ui/core/Collapse";
@@ -21,23 +23,25 @@ const useRowStyles = makeStyles({
   }
 });
 
-function createData(name, stok) {
-  return {
-    name,
-    stok,
-    resep: [
-      { bahan: "Bubuk coklat", amount: 10 },
-      { bahan: "Gula Merah", amount: 4 },
-      { bahan: "Vanili", amount: 6 },
-      { bahan: "pewarna", amount: 1 }
-    ]
-  };
-}
-
 function Row(props) {
   const { row } = props;
   const [open, setOpen] = React.useState(false);
+  const [resep,setResep] = useState([]);
   const classes = useRowStyles();
+  let id = row.id_coklat;
+  // console.log(id);
+  let api = "http://localhost:3006/api/resep/" ;
+  // console.log(api);
+  let newapi = api.concat(id);
+  // let params = api.bind(id);
+  useEffect(()=>{
+    Axios.get(newapi).then((response)=>{
+      // console.log(response.data);
+      setResep(response.data);
+    //   rows = response.data;
+    //   console.log(rows);
+    });
+  },[]);
 
   return (
     <React.Fragment>
@@ -59,6 +63,10 @@ function Row(props) {
         {/* <TableCell align="right">{row.fat}</TableCell>
         <TableCell align="right">{row.carbs}</TableCell>
         <TableCell align="right">{row.protein}</TableCell> */}
+        <TableCell >
+          {row.nama_coklat}
+        </TableCell>
+        <TableCell>{row.stok}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0, borderColor:"black"}} colSpan={6}>
@@ -77,12 +85,12 @@ function Row(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.resep.map((historyRow) => (
+                  {resep.map((historyRow) => (
                     <TableRow key={historyRow.bahan}>
                       <TableCell >
-                        {historyRow.bahan}
+                        {historyRow.nama_bahan}
                       </TableCell>
-                      <TableCell>{historyRow.amount}</TableCell>
+                      <TableCell>{historyRow.jumlah}</TableCell>
                       {/* <TableCell align="right">{historyRow.amount}</TableCell>
                       <TableCell align="right">
                         {Math.round(historyRow.amount * row.price * 100) / 100}
@@ -99,38 +107,17 @@ function Row(props) {
   );
 }
 
-// Row.propTypes = {
-//   row: PropTypes.shape({
-//     calories: PropTypes.number.isRequired,
-//     carbs: PropTypes.number.isRequired,
-//     fat: PropTypes.number.isRequired,
-//     history: PropTypes.arrayOf(
-//       PropTypes.shape({
-//         amount: PropTypes.number.isRequired,
-//         customerId: PropTypes.string.isRequired,
-//         date: PropTypes.string.isRequired,
-//       }),
-//     ).isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired,
-//     protein: PropTypes.number.isRequired,
-//   }).isRequired,
-// };
-
-const rows = [
-  createData("Dark Chocolate", 159),
-  createData("Milk Chocolate", 237),
-  createData("chocoroco", 262),
-  createData("la vie en rose", 305),
-  createData("coki coki coklat asli", 356),
-  createData("bertabur mede gurih", 10),
-  createData("coklat ke sekian", 39),
-  createData("soes coklat", 87),
-  createData("coklat 3", 100),
-  createData("coklat enak", 2)
-];
-
 export default function CollapsibleTable() {
+  const [coklat,setcoklat] = useState([]);
+  useEffect(()=>{
+    Axios.get("http://localhost:3006/api/coklatresep").then((response)=>{
+      // console.log(response.data);
+      setcoklat(response.data);
+    //   rows = response.data;
+    //   console.log(rows);
+    });
+  },[]);
+
   return (
     <div>
       <h1>Daftar Coklat & Resep</h1>

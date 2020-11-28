@@ -4,6 +4,7 @@ import Login from './login';
 import Home from './components/home';
 import DataCoklatResep from './dataCoklatResep';
 import DaftarHarga from './components/daftarHarga';
+import DataCoklat from './components/dataCoklat';
 import BeliBahan2 from './components/beliBahan2';
 import CollapsibleTable from './components/collapsibleTable';
 

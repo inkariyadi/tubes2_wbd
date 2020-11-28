@@ -21,6 +21,9 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [redirectToReferer, setredirectToReferer] = useState("");
   const classes = useStyles();
+  var emailArray = ["chacha@gmail.com", "inka@gmail.com", "jundu@gmail.com", "admin@gmail.com"];
+  var pwArray = ["12345", "inkink", "12345", "admin123"];
+  let login = false;
 
   function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -29,15 +32,25 @@ export default function Login() {
   function handleSubmit() {
     console.log(email, password);
     // event.preventDefault();
-
-    if(email==='chacha@gmail.com'  && password==='12345'){
-      // return <Redirect to="/home" />;
-      localStorage.setItem('email', email);
-      localStorage.setItem('pw', password);
-      setredirectToReferer(true);
-    }else{
-      alert("Wrong username or password");
+    for (var i=0; i <emailArray.length; i++) {
+        if ((email == emailArray[i]) && (password == pwArray[i])) {
+          localStorage.setItem('email', email);
+          localStorage.setItem('pw', password);
+          setredirectToReferer(true);
+          login=true;
+        }
     }
+    if(!login){
+        alert("Wrong username or password");
+    }
+    // if(email==='chacha@gmail.com'  && password==='12345'){
+    //   // return <Redirect to="/home" />;
+    //   localStorage.setItem('email', email);
+    //   localStorage.setItem('pw', password);
+    //   setredirectToReferer(true);
+    // }else{
+    //   alert("Wrong username or password");
+    // }
   }
 
   if (redirectToReferer) {
