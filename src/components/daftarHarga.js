@@ -125,14 +125,24 @@ export default function DaftarHarga() {
     .then(res=>res.data)
     .then(data=> new XMLParser().parseFromString(data))
     .then(xml=>{
-        
-        // var hasil_awal = xml.getElementsByTagName('return');
-        // var hasil = hasil_awal[0].value;
+        console.log(xml);
+        var hasil_awal = xml.getElementsByTagName('return');
+        var hasil = hasil_awal[0].value;
         // var hasil_parse = JSON.parse(hasil);
-        // // console.log(hasil_parse);
+        console.log(hasil);
+        if(hasil=="Add Bahan Berhasil"){
+          setDialog(prev => true);
+        }
+        else if(hasil=="Add Bahan tidak Berhasil"){
+          setDialog2(prev => true);
+        }
+        else{
+          alert("something went wrong with soap transaction");
+        }
+        
         // setResep(hasil_parse);
         // console.log("resep:");
-        console.log("yey");
+        // console.log("yey");
         // setSaldo(saldo[0].value);
     })
     ;
