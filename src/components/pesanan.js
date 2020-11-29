@@ -110,14 +110,17 @@ export default function Pesanan() {
   },[]);
   return (
     <div>
-      <h1>Daftar Coklat & Resep</h1>
+      <h1>Daftar Pesanan</h1>
       <TableContainer component={Paper} style={{backgroundColor:"pink"}}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
-            <TableCell style={{borderColor:"black"}}/>
-            <TableCell style={{borderColor:"black"}}>Nama Pemesan</TableCell>
+            <TableCell style={{borderColor:"black"}}>ID Coklat</TableCell>
+            
+            <TableCell style={{borderColor:"black"}}>Jumlah</TableCell>
             <TableCell style={{borderColor:"black"}}>Status</TableCell>
+            <TableCell style={{borderColor:"black"}}/>
+            
           </TableRow>
         </TableHead>
         <TableBody>
@@ -131,14 +134,24 @@ export default function Pesanan() {
                 <TableCell component="th" scope="row">
                   {row.id_coklat}
                 </TableCell>
-                <TableCell align="right">{row.jumlah}</TableCell>
-                <TableCell align="right">{row.status}</TableCell>
-                <TableCell align="right">
+                <TableCell align="left">{row.jumlah}</TableCell>
+                <TableCell align="left">{row.pending=="1"? "Pending" : "Delivered"}</TableCell>
+                <TableCell align="left">
                 <IconButton
                   aria-label="expand row"
                   size="small"
                 >
-                  {row.status=="Pending" ? <Button variant="contained" color="secondary">Approve</Button>: <Button variant="contained" color="secondary" disabled>Approved</Button>}
+                  {row.pending=="1" ? <Button variant="contained" color="secondary" onClick={()=>{Axios.get("http://localhost:3007/api/deliverstok",{
+      params: {
+        id_addstock : row.id_addstock,
+      }
+    }).then((response)=>{
+      console.log("berhasil approve");
+      window.location.reload(false);
+      
+      
+    });
+  }}>Approve</Button>: <Button variant="contained" color="secondary" disabled>Approved</Button>}
                 </IconButton>
                 </TableCell>
               </TableRow>

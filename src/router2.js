@@ -8,6 +8,7 @@ import DataCoklat from './components/dataCoklat';
 import BeliBahan2 from './components/beliBahan2';
 import CollapsibleTable from './components/collapsibleTable';
 
+
 import {
   BrowserRouter as Router,
   Switch, Route, Link
@@ -28,6 +29,7 @@ import DomainIcon from '@material-ui/icons/Domain';
 import FastfoodIcon from '@material-ui/icons/Fastfood';
 import Pesanan from './components/pesanan';
 import DaftarBahan from './components/daftarBahan';
+import { FastForward } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
   drawerPaper: { width: 'inherit' },
@@ -77,7 +79,7 @@ function Router2() {
             <Link to="/coklat" className={classes.link}>
               <ListItem button>
                 <ListItemIcon>
-                  <NoteIcon />
+                  <FastfoodIcon />
                 </ListItemIcon>
                 <ListItemText primary={"Coklat"} />
               </ListItem>

@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# Tugas 1 IF3110 Pengembangan Aplikasi Berbasis Web
+# Aplikasi Web Factory (Factory Management Pro)
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## Deskripsi SIngkat
+Aplikasi Web Factory digunakan untuk melakukan manajemen pada pabrik coklat. Aplikasi ini merupakan antarmuka dan menggunakan ReactJs. Operasi yang tersedia sebagai berikut:
+1. Login
+2. Memberikan approval terhadap pesanan coklat dari WWWeb. Ketika pesanan diberikan approval, maka status pesanan akan diubah dari pending menjadi delivered. Setelah itu, Aplikasi akan mengirim permintaan ke WS-Factory untuk menambah stok coklat pabrik.
+3. Melihat daftar pemesanan coklat dari WWWeb
+4. Melihat daftar bahan yang tersedia di pabrik
+5. Melihat daftar harga bahan yang tersedia di supplier
+6. Membeli bahan dari supplier
+7. Melihat daftar resep coklat
+8. Melihat daftar coklat yang tersedia di pabrik
+9. Melihat saldo pabrik
 
-In the project directory, you can run:
 
-### `npm start`
+## Screenshot
+Basis data yang digunakan adalah MySQL. Tabel pada MySQL berjumlah 1 yaitu bahan dengan atribut (id_bahan, nama_bahan, harga_satuan)
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### Login Page
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![](screenshot/Login.png)
 
-### `npm test`
+### Home Page
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![](screenshot/Home.png)
 
-### `npm run build`
+### Pesanan Page
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![](screenshot/DaftarPesanan.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Coklat Page
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![](screenshot/DaftarCoklat.png)
 
-### `npm run eject`
+### Resep Page
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+![](screenshot/DaftarResep.png)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### Bahan Page
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+![](screenshot/DaftarBahan.png)
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### Beli Bahan Page
 
-## Learn More
+![](screenshot/BeliBahan.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## About
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+* 13518001 - Chandrika Azharyanti
+* 13518027 - Jundullah
+* 13518038 - Inka Anindya Riyadi

@@ -124,13 +124,10 @@ export default function CollapsibleTable() {
         <Table aria-label="collapsible table">
           <TableHead>
             <TableRow>
+              <TableCell style={{borderColor:"black"}}/>
               <TableCell style={{borderColor:"black"}}>Nama Coklat</TableCell>
               <TableCell style={{borderColor:"black"}}></TableCell>
               <TableCell style={{borderColor:"black"}}/>
-              
-              {/* <TableCell align="right">Fat&nbsp;(g)</TableCell>
-              <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-              <TableCell align="right">Protein&nbsp;(g)</TableCell> */}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -141,6 +138,5 @@ export default function CollapsibleTable() {
         </Table>
       </TableContainer>
     </div>
-    
   );
 }
