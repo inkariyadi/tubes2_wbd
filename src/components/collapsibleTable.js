@@ -15,6 +15,7 @@ import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
+import XMLParser from 'react-xml-parser';
 
 const useRowStyles = makeStyles({
   root: {
@@ -30,18 +31,47 @@ function Row(props) {
   const classes = useRowStyles();
   let id = row.id_coklat;
   // console.log(id);
-  let api = "http://localhost:3007/api/resep/" ;
-  // console.log(api);
-  let newapi = api.concat(id);
+  // let api = "http://localhost:3007/api/resep/" ;
+  // // console.log(api);
+  // let newapi = api.concat(id);
   // let params = api.bind(id);
   useEffect(()=>{
-    Axios.get(newapi).then((response)=>{
-      // console.log(response.data);
-      setResep(response.data);
+    soapGetResep();
+    // Axios.get(newapi).then((response)=>{
+    //   // console.log(response.data);
+    //   setResep(response.data);
     //   rows = response.data;
     //   console.log(rows);
-    });
+    // });
   },[]);
+  const soapGetResep =() =>{
+   
+    const config = {headers:{'Content-Type':'text/xml;charset=utf-8'}};
+    const body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cod="http://codejava.net/">' + 
+                    '<soapenv:Header/>' + 
+                    '<soapenv:Body>' + 
+                      '<cod:getResepDatabase>' + 
+                          '<arg0>' +id+'</arg0>'+
+                      '</cod:getResepDatabase>'+
+                    '</soapenv:Body>' + 
+                '</soapenv:Envelope>';
+    Axios.post("http://localhost:8080/wwfactory/ws/factory?wsdl",body,config)
+    .then(res=>res.data)
+    .then(data=> new XMLParser().parseFromString(data))
+    .then(xml=>{
+        
+        var hasil_awal = xml.getElementsByTagName('return');
+        var hasil = hasil_awal[0].value;
+        var hasil_parse = JSON.parse(hasil);
+        // console.log(hasil_parse);
+        setResep(hasil_parse);
+        console.log("resep:");
+        console.log(resep);
+        // setSaldo(saldo[0].value);
+    })
+    ;
+  }
+
 
   return (
     <React.Fragment>
@@ -109,13 +139,39 @@ function Row(props) {
 export default function CollapsibleTable() {
   const [coklat,setcoklat] = useState([]);
   useEffect(()=>{
-    Axios.get("http://localhost:3007/api/coklatresep").then((response)=>{
-      // console.log(response.data);
-      setcoklat(response.data);
-    //   rows = response.data;
-    //   console.log(rows);
-    });
+    soapGetDistinct();
+    // Axios.get("http://localhost:3007/api/coklatresep").then((response)=>{
+    //   // console.log(response.data);
+    //   setcoklat(response.data);
+    // //   rows = response.data;
+    // //   console.log(rows);
+    // });
   },[]);
+  const soapGetDistinct =() =>{
+   
+    const config = {headers:{'Content-Type':'text/xml;charset=utf-8'}};
+    const body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cod="http://codejava.net/">' + 
+                      '<soapenv:Header/>' + 
+                      '<soapenv:Body>' + 
+                        '<cod:getDistinctIDCoklatDatabase/>' + 
+                      '</soapenv:Body>' + 
+                 ' </soapenv:Envelope>';
+    Axios.post("http://localhost:8080/wwfactory/ws/factory?wsdl",body,config)
+    .then(res=>res.data)
+    .then(data=> new XMLParser().parseFromString(data))
+    .then(xml=>{
+        
+        var hasil_awal = xml.getElementsByTagName('return');
+        var hasil = hasil_awal[0].value;
+        var hasil_parse = JSON.parse(hasil);
+        console.log(hasil_parse);
+        setcoklat(hasil_parse);
+        console.log("distinct id:");
+        console.log(coklat);
+        // setSaldo(saldo[0].value);
+    })
+    ;
+  }
 
   return (
     <div>

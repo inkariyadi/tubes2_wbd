@@ -15,6 +15,7 @@ import KeyboardArrowDownIcon from "@material-ui/icons/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@material-ui/icons/KeyboardArrowUp";
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
+import XMLParser from 'react-xml-parser';
 
 const useRowStyles = makeStyles({
   root: {
@@ -102,12 +103,40 @@ const rows = [
 ];
 
 export default function Pesanan() {
-  const [pesananList,setPesananList] = useState([]);
+  const [pesanan,setPesanan] = useState([]);
   useEffect(()=>{
-    Axios.get("http://localhost:3007/api/stock").then((response)=>{
-      setPesananList(response.data);
-    });
+    soapGetAddStock();
+  
+    // Axios.get("http://localhost:3007/api/saldo").then((response)=>{
+    //   setPesananList(response.data);
+    //   console.log(response.data);
+    // });
   },[]);
+  const soapGetAddStock =() =>{
+   
+    const config = {headers:{'Content-Type':'text/xml;charset=utf-8'}};
+    const body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cod="http://codejava.net/">' + 
+                      '<soapenv:Header/>' + 
+                      '<soapenv:Body>' + 
+                        '<cod:getAddStockDatabase/>' + 
+                      '</soapenv:Body>' + 
+                  '</soapenv:Envelope>';
+    Axios.post("http://localhost:8080/wwfactory/ws/factory?wsdl",body,config)
+    .then(res=>res.data)
+    .then(data=> new XMLParser().parseFromString(data))
+    .then(xml=>{
+        
+        var saldo = xml.getElementsByTagName('return');
+        var hasil = saldo[0].value;
+        var hasil_parse = JSON.parse(hasil);
+        console.log(hasil_parse);
+        setPesanan(hasil_parse);
+        console.log(pesanan);
+        // setSaldo(saldo[0].value);
+    })
+    ;
+  }
+  
   return (
     <div>
       <h1>Daftar Pesanan</h1>
@@ -129,7 +158,7 @@ export default function Pesanan() {
             <Row key={row.name} row={row} />
           ))} */}
           {/* {ini punya inka} */}
-          {pesananList.map((row) => (
+          {pesanan.map((row) => (
               <TableRow key={row.id_coklat}>
                 <TableCell component="th" scope="row">
                   {row.id_coklat}

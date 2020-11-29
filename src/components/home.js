@@ -10,33 +10,11 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Axios from 'axios';
+import XMLParser from 'react-xml-parser';
 import {
     BrowserRouter as Router,
     Switch, Route, Link
   } from "react-router-dom";
-
-
-// const useStyles = makeStyles()({
-//   root: {
-//     width:'100%',
-//     height:'100%',
-    
-//   },
-//   saldo:{
-//     align:'right',
-//   },
-//   group:{
-//     float: 'left',
-//   },
-//   card:{
-//     maxWidth: 500,
-    
-//   },
-//   link: {
-//     textDecoration: 'none',
-//     // color: theme.palette.text.primary
-//   },
-// });
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -65,10 +43,7 @@ export default function Home() {
   const classes = useStyles();
   const [saldo,setSaldo] = useState(0);
   useEffect(()=>{
-    Axios.get("http://localhost:3007/api/saldo").then((response)=>{
-    //   console.log(response.data[0].saldo_pabrik);
-      setSaldo(response.data[0].saldo_pabrik);
-    });
+    soapGetSaldo();
   },[]);
 
 
@@ -81,11 +56,32 @@ export default function Home() {
     return <Redirect to="/" />;
   }
 
+  const soapGetSaldo =() =>{
+    const config = {headers:{'Content-Type':'text/xml;charset=utf-8'}};
+    const body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cod="http://codejava.net/">'+
+    '<soapenv:Header/>'+
+    '<soapenv:Body>' +
+        '<cod:getSaldoDatabase/>' +
+    '</soapenv:Body>' +
+    '</soapenv:Envelope>';
+    Axios.post("http://localhost:8080/wwfactory/ws/factory?wsdl",body,config)
+    .then(res=>res.data)
+    .then(data=> new XMLParser().parseFromString(data))
+    .then(xml=>{
+        var saldo = xml.getElementsByTagName('return');
+        // console.log(saldo[0].value);
+        setSaldo(saldo[0].value);
+    })
+    ;
+  }
   
   return (
     
     <div className={classes.root}> 
     <h1>Willy Wangky Factory</h1>
+    {/* <Button variant="outlined" color="primary" onClick={soapRequestGetSaldo}>
+            Saldo dari  JAXWS
+    </Button> */}
     <Chip className = {classes.saldo} size="medium" label={"Saldo : Rp " + saldo} color="secondary" />
         
         <Card className={classes.card}>

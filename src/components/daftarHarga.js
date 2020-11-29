@@ -13,6 +13,8 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import Card from '@material-ui/core/Card';
+import XMLParser from 'react-xml-parser';
+
 import { setPageStateUpdate } from '@material-ui/data-grid';
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -25,6 +27,7 @@ const useStyles = makeStyles({
     maxWidth: 300,
   }
 });
+
 
 // function createData(name, calories, fat, carbs, protein) {
 //   return { name, calories, fat, carbs, protein };
@@ -44,13 +47,14 @@ export default function DaftarHarga() {
   const [dialog2,setDialog2] = useState(false);
   const [id_bahan,setIdBahan] = useState (1);
   const [nama_bahan,setNamaBahan] = useState("bahan 1");//FIXME: get dari value
-  const [harga,setHarga] = useState(2000); //FIXME: get dari value
+  const [harga,setHarga] = useState(0); //FIXME: get dari value
   const [jumlah, setJumlah] = useState(0);
   const [total,setTotal] = useState(0);
   const [bahanList,setBahanList] = useState([]);
   useEffect(()=>{
     Axios.get("http://localhost:3005/api/harga").then((response)=>{
       // console.log(response.data);
+      console.log(response.data);
       setBahanList(response.data);
     //   rows = response.data;
     //   console.log(rows);
@@ -104,6 +108,35 @@ export default function DaftarHarga() {
       
     });
   }
+  const soaptransaction = () =>{
+    const config = {headers:{'Content-Type':'text/xml;charset=utf-8'}};
+    const body = '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:cod="http://codejava.net/">'+
+                      '<soapenv:Header/>' + 
+                      '<soapenv:Body>' + 
+                        '<cod:transaction>' + 
+                            '<!--Optional:-->' + 
+                            '<arg0>' + nama_bahan + '</arg0>' + 
+                            '<arg1>' + jumlah + '</arg1>' +
+                            '<arg2>' + harga + '</arg2>' + 
+                        '</cod:transaction>' + 
+                      '</soapenv:Body>' + 
+                  '</soapenv:Envelope>';
+    Axios.post("http://localhost:8080/wwfactory/ws/factory?wsdl",body,config)
+    .then(res=>res.data)
+    .then(data=> new XMLParser().parseFromString(data))
+    .then(xml=>{
+        
+        // var hasil_awal = xml.getElementsByTagName('return');
+        // var hasil = hasil_awal[0].value;
+        // var hasil_parse = JSON.parse(hasil);
+        // // console.log(hasil_parse);
+        // setResep(hasil_parse);
+        // console.log("resep:");
+        console.log("yey");
+        // setSaldo(saldo[0].value);
+    })
+    ;
+  }
 
   const fetchData = () =>{
     fetch('http://localhost:8080/wwfactory/ws/hello')
@@ -115,7 +148,7 @@ export default function DaftarHarga() {
     })
 
     // setTimeout(() => {
-    //     console.log('anjing')
+    //     console.log('timeoutttt')
     // }, 5000);
   }
   return (
@@ -200,12 +233,10 @@ export default function DaftarHarga() {
           </TableBody>
         </Table>
       </TableContainer>
-      <Button variant="contained" color="secondary" onClick={transaction}>
+      <Button variant="contained" color="secondary" onClick={soaptransaction}>
         Beli
       </Button>
-      <Button variant="contained" color="secondary" onClick={fetchData}>
-        Tes Cors
-      </Button>
+    
       
       <Snackbar open={dialog} autoHideDuration={1000} onClose={handleCloseDialog}>
         <Alert severity="success">
